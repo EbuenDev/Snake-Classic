@@ -14,7 +14,7 @@ import java.util.Random;
 public class GameController implements Runnable {
 
     public enum GameState {
-        COUNTDOWN, RUNNING, GAME_OVER, WAITING_FOR_RESTART
+        COUNTDOWN,SHOW_GO, RUNNING, GAME_OVER, WAITING_FOR_RESTART
     }
 
     private Thread thread;
@@ -72,8 +72,14 @@ public class GameController implements Runnable {
                     sleep(1000); // 1 second delay for countdown
                     countdownTimer--;
                     if (countdownTimer == 0) {
-                        gameState = GameState.RUNNING;
+                        gameState = GameState.SHOW_GO;
                     }
+                    break;
+                case SHOW_GO:
+                    // Force the draw to show "GO!" text
+                    draw();
+                    sleep(1000);       // Hold GO! for half a second
+                    gameState = GameState.RUNNING;
                     break;
                 case RUNNING:
                     update();
