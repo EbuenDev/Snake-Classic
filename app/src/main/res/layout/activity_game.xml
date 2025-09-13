@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameActivity">
+
+    <com.devian.snakeclassic.view.GameView
+        android:id="@+id/gameView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/dpadLayout" />
+
+    <RelativeLayout
+        android:id="@+id/dpadLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/upButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/up" />
+
+        <Button
+            android:id="@+id/downButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/upButton"
+            android:layout_centerHorizontal="true"
+            android:text="@string/down" />
+
+        <Button
+            android:id="@+id/leftButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_toStartOf="@id/downButton"
+            android:layout_marginTop="80dp"
+            android:text="@string/left" />
+
+        <Button
+            android:id="@+id/rightButton"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:layout_toEndOf="@id/downButton"
+            android:layout_marginTop="80dp"
+            android:text="@string/right" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/gameOverButtonsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/dpadLayout"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/restartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restart" />
+
+        <Button
+            android:id="@+id/mainMenuButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Main Menu" />
+
+    </LinearLayout>
+
+</RelativeLayout>

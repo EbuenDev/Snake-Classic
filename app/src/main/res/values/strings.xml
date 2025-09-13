@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SnakeClassic</string>
+    <string name="restart">Restart</string>
+    <string name="main_menu">Main menu</string>
+    <string name="right">Right</string>
+    <string name="left">Left</string>
+    <string name="down">Down</string>
+    <string name="up">Up</string>
+</resources>
