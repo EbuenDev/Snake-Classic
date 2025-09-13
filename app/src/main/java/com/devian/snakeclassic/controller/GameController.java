@@ -14,7 +14,7 @@ import java.util.Random;
 public class GameController implements Runnable {
 
     public enum GameState {
-        COUNTDOWN, RUNNING, GAME_OVER
+        COUNTDOWN, RUNNING, GAME_OVER, WAITING_FOR_RESTART
     }
 
     private Thread thread;
@@ -30,6 +30,7 @@ public class GameController implements Runnable {
     private Point food;
     private int direction = 3; // 0=up,1=right,2=down,3=left
     private int score = 0;
+    private boolean gameOverShown = false;
 
     public GameController(GameActivity gameActivity, GameView gameView, int screenX, int screenY) {
         this.gameActivity = gameActivity;
@@ -48,11 +49,18 @@ public class GameController implements Runnable {
         score = 0;
         gameState = GameState.COUNTDOWN;
         countdownTimer = 3;
+        gameOverShown = false;
+        direction = 3; // Reset direction to left
     }
 
     private void spawnFood() {
         Random random = new Random();
         food = new Point(random.nextInt(mapWidth), random.nextInt(mapHeight));
+
+        // Make sure food doesn't spawn on snake
+        while (snake.contains(food)) {
+            food = new Point(random.nextInt(mapWidth), random.nextInt(mapHeight));
+        }
     }
 
     @Override
@@ -74,7 +82,18 @@ public class GameController implements Runnable {
                     break;
                 case GAME_OVER:
                     draw();
-                    sleep(1000); // Keep drawing game over screen
+                    if (!gameOverShown) {
+                        gameOverShown = true;
+                        Log.d("GameController", "Showing game over screen");
+                        gameActivity.showRestartButton(score);
+                        gameState = GameState.WAITING_FOR_RESTART;
+                    }
+                    sleep(100);
+                    break;
+                case WAITING_FOR_RESTART:
+                    // Just wait here until user chooses restart or main menu
+                    draw();
+                    sleep(100);
                     break;
             }
         }
@@ -100,24 +119,25 @@ public class GameController implements Runnable {
             snake.remove(snake.size() - 1);
         }
 
+        // Check wall collision
         if (newHead.x < 0 || newHead.y < 0 ||
                 newHead.x >= mapWidth || newHead.y >= mapHeight) {
-            gameState = GameState.GAME_OVER;
-            isPlaying = false;
-            gameActivity.showRestartButton();
-
+            gameOver();
             return;
         }
 
+        // Check self collision
         for (int i = 1; i < snake.size(); i++) {
             if (newHead.equals(snake.get(i))) {
-                gameState = GameState.GAME_OVER;
-                isPlaying = false;
-                Log.d("GameController", "Game Over! Calling showRestartButton.");
-                gameActivity.showRestartButton();
+                gameOver();
                 return;
             }
         }
+    }
+
+    private void gameOver() {
+        Log.d("GameController", "Game Over! Score: " + score);
+        gameState = GameState.GAME_OVER;
     }
 
     private void draw() {
@@ -135,26 +155,31 @@ public class GameController implements Runnable {
     public void pause() {
         isPlaying = false;
         try {
-            thread.join();
+            if (thread != null) {
+                thread.join();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     public void resume() {
-        isPlaying = true;
-        thread = new Thread(this);
-        thread.start();
+        if (!isPlaying) {
+            isPlaying = true;
+            thread = new Thread(this);
+            thread.start();
+        }
     }
 
     public void setDirection(int newDirection) {
-        if (Math.abs(direction - newDirection) != 2) {
+        // Only allow direction change if game is running and not opposite direction
+        if (gameState == GameState.RUNNING && Math.abs(direction - newDirection) != 2) {
             direction = newDirection;
         }
     }
 
     public void restartGame() {
+        Log.d("GameController", "Restarting game...");
         initGame();
-        resume();
     }
 }

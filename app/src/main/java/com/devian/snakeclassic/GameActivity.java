@@ -8,6 +8,8 @@ import android.view.View;
 import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,8 +20,9 @@ public class GameActivity extends AppCompatActivity {
 
     private GameView gameView;
     private GameController gameController;
-    private Button restartButton,  mainMenuButton;
-    private View gameOverButtonsLayout;
+    private Button restartButton, mainMenuButton;
+    private LinearLayout gameOverLayout; // Changed from View to LinearLayout
+    private TextView finalScoreTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +33,38 @@ public class GameActivity extends AppCompatActivity {
         final View dpadLayout = findViewById(R.id.dpadLayout);
         restartButton = findViewById(R.id.restartButton);
         mainMenuButton = findViewById(R.id.mainMenuButton);
-        gameOverButtonsLayout = findViewById(R.id.gameOverButtonsLayout);
+
+        // Fixed: Remove 'LinearLayout' declaration to use the class field
+        gameOverLayout = findViewById(R.id.gameOverLayout);
+        finalScoreTextView = findViewById(R.id.finalScoreTextView);
+
+        // Debug: Check if findViewById worked
+        if (gameOverLayout == null) {
+            Log.e("GameActivity", "Failed to find gameOverLayout in layout!");
+        }
+        if (finalScoreTextView == null) {
+            Log.e("GameActivity", "Failed to find finalScoreTextView in layout!");
+        }
 
         dpadLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 dpadLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                View topSpacer = findViewById(R.id.topSpacer);
                 int dpadHeight = dpadLayout.getHeight();
+                int topSpacerHeight = topSpacer.getHeight();
+                int margins = 16; // Account for 8dp margin on each side
 
                 Display display = getWindowManager().getDefaultDisplay();
                 Point size = new Point();
                 display.getSize(size);
 
-                gameController = new GameController(GameActivity.this, gameView, size.x, size.y - dpadHeight);
+                // Calculate available game area
+                int gameWidth = size.x - margins;
+                int gameHeight = size.y - dpadHeight - topSpacerHeight - margins;
+
+                gameController = new GameController(GameActivity.this, gameView, gameWidth, gameHeight);
                 gameView.setGameController(gameController);
                 gameView.resume();
 
@@ -85,27 +107,29 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 gameController.restartGame();
-                gameOverButtonsLayout.setVisibility(View.GONE);
+                gameOverLayout.setVisibility(View.GONE);
             }
         });
 
         mainMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameOverButtonsLayout.setVisibility(View.GONE);
+                gameOverLayout.setVisibility(View.GONE);
                 Intent intent = new Intent(GameActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
 
-    public void showRestartButton() {
+    public void showRestartButton(final int finalScore) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d("GameActivity", "Showing game over buttons.");
-                gameOverButtonsLayout.setVisibility(View.VISIBLE);
+                Log.d("GameActivity", "Showing game over screen.");
+                finalScoreTextView.setText("Final Score: " + finalScore);
+                gameOverLayout.setVisibility(View.VISIBLE);
             }
         });
     }

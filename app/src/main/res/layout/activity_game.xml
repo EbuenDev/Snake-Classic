@@ -5,11 +5,21 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
+    <!-- Top spacer to create margin -->
+    <View
+        android:id="@+id/topSpacer"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/black" />
+
     <com.devian.snakeclassic.view.GameView
         android:id="@+id/gameView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/dpadLayout" />
+        android:layout_below="@id/topSpacer"
+        android:layout_above="@id/dpadLayout"
+        android:layout_margin="8dp" />
 
     <RelativeLayout
         android:id="@+id/dpadLayout"
@@ -24,7 +34,9 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerHorizontal="true"
-            android:text="@string/up" />
+            android:text="@string/up"
+            android:textSize="20sp"
+            android:fontFamily="@font/solderwood_regular"/>
 
         <Button
             android:id="@+id/downButton"
@@ -32,7 +44,9 @@
             android:layout_height="80dp"
             android:layout_below="@id/upButton"
             android:layout_centerHorizontal="true"
-            android:text="@string/down" />
+            android:text="@string/down"
+            android:textSize="20sp"
+            android:fontFamily="@font/solderwood_regular"/>
 
         <Button
             android:id="@+id/leftButton"
@@ -40,39 +54,75 @@
             android:layout_height="80dp"
             android:layout_toStartOf="@id/downButton"
             android:layout_marginTop="80dp"
-            android:text="@string/left" />
+            android:text="@string/left"
+            android:fontFamily="@font/solderwood_regular"
+            android:textSize="20sp"/>
 
         <Button
             android:id="@+id/rightButton"
-            android:layout_width="160dp"
+            android:layout_width="155dp"
             android:layout_height="80dp"
             android:layout_toEndOf="@id/downButton"
             android:layout_marginTop="80dp"
-            android:text="@string/right" />
+            android:text="@string/right"
+            android:textSize="20sp"
+            android:fontFamily="@font/solderwood_regular"/>
 
     </RelativeLayout>
 
+    <!-- Use your original structure but fix the IDs and positioning -->
     <LinearLayout
-        android:id="@+id/gameOverButtonsLayout"
+        android:id="@+id/gameOverLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/dpadLayout"
-        android:layout_marginBottom="16dp"
+        android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:gravity="center"
+        android:visibility="gone"
+        android:elevation="30dp"
+        android:background="#CC000000"
+        android:padding="32dp">
+
+        <TextView
+            android:id="@+id/gameOverTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Game Over"
+            android:textColor="@android:color/white"
+            android:textSize="48sp"
+            android:fontFamily="@font/solderwood_regular"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/finalScoreTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:fontFamily="@font/solderwood_regular"
+            android:gravity="center" />
 
         <Button
             android:id="@+id/restartButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Restart" />
+            android:layout_marginTop="24dp"
+            android:text="RESTART"
+            android:textSize="25sp"
+            android:fontFamily="@font/solderwood_regular"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/mainMenuButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Main Menu" />
+            android:layout_marginTop="8dp"
+            android:text="MAIN MENU"
+            android:textSize="25sp"
+            android:fontFamily="@font/solderwood_regular"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

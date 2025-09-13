@@ -6,12 +6,93 @@
     android:background="@color/black"
     tools:context=".SplashActivity">
 
+    <!-- App Name - Center of screen -->
     <TextView
+        android:id="@+id/appName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="Snake Classic"
+        android:fontFamily="@font/solderwood_regular"
         android:textColor="@color/white"
         android:textSize="48sp" />
+
+    <!-- Loading Text -->
+    <TextView
+        android:id="@+id/loadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="Loading..."
+        android:fontFamily="monospace"
+        android:textColor="#CCCCCC"
+        android:textSize="16sp"
+        android:alpha="0.8" />
+
+    <!-- Progress Bar Container -->
+    <LinearLayout
+        android:id="@+id/progressContainer"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loadingText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical">
+
+        <!-- Progress Bar Background -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="#333333"
+            android:layout_marginBottom="8dp">
+
+            <!-- Progress Bar Fill -->
+            <View
+                android:id="@+id/progressBarFill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="#00FF00"
+                android:layout_alignParentStart="true" />
+
+            <!-- Glow effect overlay -->
+            <View
+                android:id="@+id/progressGlow"
+                android:layout_width="20dp"
+                android:layout_height="12dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/progress_glow"
+                android:layout_marginStart="-10dp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <!-- Progress Percentage -->
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="0%"
+            android:textColor="#00FF00"
+            android:textSize="14sp"
+            android:fontFamily="monospace" />
+
+    </LinearLayout>
+
+    <!-- Copyright at bottom -->
+    <TextView
+        android:id="@+id/copyrightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="© 2025 Developed by: Devian"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:fontFamily="monospace"
+        android:alpha="0.7" />
 
 </RelativeLayout>
