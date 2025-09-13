@@ -84,12 +84,6 @@ public class GameView extends SurfaceView {
                     canvas.drawText("Score: " + score, 50, 150, paint);
                     break;
                 case GAME_OVER:
-                    paint.setColor(Color.WHITE); // Explicitly set color to white
-                    paint.setTextSize(120);
-                    paint.setTextAlign(Paint.Align.CENTER);
-                    canvas.drawText("Game Over", getWidth() / 2, getHeight() / 2, paint);
-                    paint.setTextSize(60);
-                    canvas.drawText("Final Score: " + score, getWidth() / 2, getHeight() / 2 + 100, paint);
                     break;
             }
 
