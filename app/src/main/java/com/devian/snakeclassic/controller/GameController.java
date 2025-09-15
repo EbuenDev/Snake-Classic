@@ -14,13 +14,15 @@ import java.util.Random;
 public class GameController implements Runnable {
 
     public enum GameState {
-        COUNTDOWN,SHOW_GO, RUNNING, GAME_OVER, WAITING_FOR_RESTART
+        COUNTDOWN, RUNNING,SHOW_GO, GAME_OVER, WAITING_FOR_RESTART
     }
 
     private Thread thread;
     private boolean isPlaying;
     private GameState gameState;
     private int countdownTimer;
+    public int currentCountdownDisplay = 3;
+
     private GameView gameView;
     private GameActivity gameActivity;
 
@@ -28,7 +30,7 @@ public class GameController implements Runnable {
     private final int cellSize = 50;
     private ArrayList<Point> snake;
     private Point food;
-    private int direction = 3; // 0=up,1=right,2=down,3=left
+    private int direction = 2; // 0=up,1=right,2=down,3=left
     private int score = 0;
     private boolean gameOverShown = false;
 
@@ -39,18 +41,21 @@ public class GameController implements Runnable {
         this.screenY = screenY;
         this.mapWidth = screenX / cellSize;
         this.mapHeight = screenY / cellSize;
-        initGame();
+        // CHANGE: Don't call initGame() here - let startGame() handle it
     }
 
     private void initGame() {
         snake = new ArrayList<>();
-        snake.add(new Point(5, 5));
+        snake.add(new Point(5, 5)); // Head
+        snake.add(new Point(4, 5)); // Body segment 1
         spawnFood();
         score = 0;
         gameState = GameState.COUNTDOWN;
+        currentCountdownDisplay = 3;
+        // CHANGE: Set to 3 to properly show 3-2-1-GO sequence
         countdownTimer = 3;
         gameOverShown = false;
-        direction = 3; // Reset direction to left
+        direction = 1; // Reset direction to left
     }
 
     private void spawnFood() {
@@ -68,23 +73,28 @@ public class GameController implements Runnable {
         while (isPlaying) {
             switch (gameState) {
                 case COUNTDOWN:
-                    draw();
-                    sleep(1000); // 1 second delay for countdown
-                    countdownTimer--;
-                    if (countdownTimer == 0) {
-                        gameState = GameState.SHOW_GO;
+                    draw();  // Draw currentCountdownDisplay
+                    sleep(1000);
+
+                    if (currentCountdownDisplay > 1) {
+                        currentCountdownDisplay--;
+                    } else if (currentCountdownDisplay == 1) {
+                        currentCountdownDisplay = 0;  // Show "GO!" next
+                    } else {
+                        gameState = GameState.RUNNING;
                     }
-                    break;
-                case SHOW_GO:
-                    // Force the draw to show "GO!" text
-                    draw();
-                    sleep(1000);       // Hold GO! for half a second
-                    gameState = GameState.RUNNING;
                     break;
                 case RUNNING:
                     update();
                     draw();
                     sleep(150);
+                    break;
+
+                case SHOW_GO:
+                    // Force the draw to show "GO!" text
+                    draw();
+                    sleep(1000);       // Hold GO! for 1 second
+                    gameState = GameState.RUNNING;
                     break;
                 case GAME_OVER:
                     draw();
@@ -106,6 +116,8 @@ public class GameController implements Runnable {
     }
 
     private void update() {
+        gameView.updateAnimation(0.016f);
+        gameView.draw(snake, food, score, mapWidth, mapHeight, gameState, countdownTimer);
         if (gameState != GameState.RUNNING) return;
 
         Point head = snake.get(0);
@@ -177,6 +189,13 @@ public class GameController implements Runnable {
         }
     }
 
+    // CHANGE: Add method to start game properly from MainActivity
+    public void startGame() {
+        // Reset everything for a fresh start
+        initGame();
+        resume();
+    }
+
     public void setDirection(int newDirection) {
         // Only allow direction change if game is running and not opposite direction
         if (gameState == GameState.RUNNING && Math.abs(direction - newDirection) != 2) {
@@ -186,6 +205,8 @@ public class GameController implements Runnable {
 
     public void restartGame() {
         Log.d("GameController", "Restarting game...");
-        initGame();
+        pause();  // Stop the current thread
+        initGame();  // Reset everything including countdownTimer = 3
+        resume();   // Start fresh
     }
 }

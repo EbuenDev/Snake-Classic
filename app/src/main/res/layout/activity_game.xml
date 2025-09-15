@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1C222E"
     tools:context=".GameActivity">
 
     <!-- Top spacer to create margin -->
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
-        android:background="@color/black" />
+        android:background="#1C222E" />
 
     <com.devian.snakeclassic.view.GameView
         android:id="@+id/gameView"
@@ -34,39 +35,46 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
             android:text="@string/up"
             android:textSize="20sp"
-            android:fontFamily="@font/solderwood_regular"/>
+            android:fontFamily="@font/solderwood_regular"
+            android:background="@drawable/rounded_button"/>
 
         <Button
             android:id="@+id/downButton"
             android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_height="75dp"
             android:layout_below="@id/upButton"
             android:layout_centerHorizontal="true"
             android:text="@string/down"
             android:textSize="20sp"
-            android:fontFamily="@font/solderwood_regular"/>
+            android:fontFamily="@font/solderwood_regular"
+            android:background="@drawable/rounded_button"/>
 
         <Button
             android:id="@+id/leftButton"
             android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_height="75dp"
             android:layout_toStartOf="@id/downButton"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="85dp"
+            android:layout_marginEnd="5dp"
             android:text="@string/left"
             android:fontFamily="@font/solderwood_regular"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:background="@drawable/rounded_button"/>
 
         <Button
             android:id="@+id/rightButton"
             android:layout_width="155dp"
-            android:layout_height="80dp"
+            android:layout_height="75dp"
             android:layout_toEndOf="@id/downButton"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="85dp"
+            android:layout_marginStart="5dp"
             android:text="@string/right"
             android:textSize="20sp"
-            android:fontFamily="@font/solderwood_regular"/>
+            android:fontFamily="@font/solderwood_regular"
+            android:background="@drawable/rounded_button"/>
 
     </RelativeLayout>
 
@@ -80,7 +88,7 @@
         android:gravity="center"
         android:visibility="gone"
         android:elevation="30dp"
-        android:background="#CC000000"
+        android:background="@drawable/rounded_background"
         android:padding="32dp">
 
         <TextView
@@ -88,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Game Over"
-            android:textColor="@android:color/white"
+            android:textColor="#FD504B"
             android:textSize="48sp"
             android:fontFamily="@font/solderwood_regular"
             android:textStyle="bold"
@@ -106,23 +114,25 @@
 
         <Button
             android:id="@+id/restartButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="70dp"
             android:layout_marginTop="24dp"
             android:text="RESTART"
             android:textSize="25sp"
+            android:background="@drawable/restart_button_selector"
             android:fontFamily="@font/solderwood_regular"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/mainMenuButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="70dp"
             android:layout_marginTop="8dp"
             android:text="MAIN MENU"
             android:textSize="25sp"
+            android:background="@drawable/menu_button_selector"
             android:fontFamily="@font/solderwood_regular"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
