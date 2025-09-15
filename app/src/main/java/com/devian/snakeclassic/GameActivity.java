@@ -88,6 +88,7 @@ public class GameActivity extends AppCompatActivity {
                 upButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        musicManager.playButtonPressSoundEffect();
                         gameController.setDirection(0);
                     }
                 });
@@ -95,6 +96,7 @@ public class GameActivity extends AppCompatActivity {
                 downButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        musicManager.playButtonPressSoundEffect();
                         gameController.setDirection(2);
                     }
                 });
@@ -102,6 +104,7 @@ public class GameActivity extends AppCompatActivity {
                 leftButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        musicManager.playButtonPressSoundEffect();
                         gameController.setDirection(3);
                     }
                 });
@@ -109,6 +112,7 @@ public class GameActivity extends AppCompatActivity {
                 rightButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        musicManager.playButtonPressSoundEffect();
                         gameController.setDirection(1);
                     }
                 });
@@ -118,6 +122,7 @@ public class GameActivity extends AppCompatActivity {
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                musicManager.playButtonPressSoundEffect();
                 gameController.restartGame();
                 gameOverLayout.setVisibility(View.GONE);
             }
@@ -126,6 +131,7 @@ public class GameActivity extends AppCompatActivity {
         mainMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                musicManager.playButtonPressSoundEffect();
                 musicManager.pauseBackgroundMusic(); // pause music when press Main menu
                 gameOverLayout.setVisibility(View.GONE);
                 Intent intent = new Intent(GameActivity.this, MainActivity.class);

@@ -12,7 +12,7 @@ public class MusicManager {
     private static MusicManager instance;
     private MediaPlayer mediaPlayer;
     private SoundPool soundPool;
-    private int biteSoundId;
+    private int biteSoundId, gameOverSoundId,buttonPressSoundId;
     private boolean isMusicEnabled = true;
     private boolean isSoundEffectEnabled = true;
     private Context context;
@@ -31,6 +31,8 @@ public class MusicManager {
                 .build();
 
         biteSoundId = soundPool.load(context, R.raw.bite_sound_effect, 1);
+        gameOverSoundId = soundPool.load(context, R.raw.game_over_sound, 1);
+        buttonPressSoundId = soundPool.load(context, R.raw.button_sound, 1);
     }
 
     public static synchronized MusicManager getInstance(Context context) {
@@ -40,7 +42,20 @@ public class MusicManager {
         return instance;
     }
 
-    public void playSoundEffect() {
+    public void playButtonPressSoundEffect() {
+        if (isSoundEffectEnabled && buttonPressSoundId != 0) {
+            soundPool.play(buttonPressSoundId, 1f, 1f, 1, 0, 1f);
+        }
+    }
+
+    public void playHitWallSoundEffect() {
+
+        if (isSoundEffectEnabled && gameOverSoundId != 0) {
+            soundPool.play(gameOverSoundId, 1f, 1f, 1, 0, 1f);
+        }
+    }
+
+    public void playEatSoundEffect() {
         if (isSoundEffectEnabled && biteSoundId != 0) {
             soundPool.play(biteSoundId, 1f, 1f, 1, 0, 1f);
         }

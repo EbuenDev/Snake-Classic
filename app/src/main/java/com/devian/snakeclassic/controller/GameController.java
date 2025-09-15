@@ -83,6 +83,7 @@ public class GameController implements Runnable {
                     } else if (currentCountdownDisplay == 1) {
                         currentCountdownDisplay = 0;  // Show "GO!" next
                         if (musicManager != null) {
+                            musicManager.playButtonPressSoundEffect();
                             musicManager.resumeBackgroundMusic();
                         }
                     } else {
@@ -139,7 +140,7 @@ public class GameController implements Runnable {
             score++;
             // Play bite sound when snake eats food
             if (musicManager != null) {
-                musicManager.playSoundEffect();
+                musicManager.playEatSoundEffect();
             }
             spawnFood();
         } else {
@@ -149,6 +150,9 @@ public class GameController implements Runnable {
         // Check wall collision
         if (newHead.x < 0 || newHead.y < 0 ||
                 newHead.x >= mapWidth || newHead.y >= mapHeight) {
+            if (musicManager != null) {
+                musicManager.playHitWallSoundEffect();
+            }
             gameOver();
             return;
         }
@@ -202,6 +206,7 @@ public class GameController implements Runnable {
     // CHANGE: Add method to start game properly from MainActivity
     public void startGame() {
         // Reset everything for a fresh start
+        musicManager.playButtonPressSoundEffect();
         initGame();
         resume();
     }
