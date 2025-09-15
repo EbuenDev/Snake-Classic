@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import com.devian.snakeclassic.GameActivity;
 import android.util.Log;
 
+import com.devian.snakeclassic.MusicManager;
 import com.devian.snakeclassic.view.GameView;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class GameController implements Runnable {
 
     private GameView gameView;
     private GameActivity gameActivity;
-
+    private MusicManager musicManager;
     private int screenX, screenY, mapWidth, mapHeight;
     private final int cellSize = 50;
     private ArrayList<Point> snake;
@@ -34,13 +35,14 @@ public class GameController implements Runnable {
     private int score = 0;
     private boolean gameOverShown = false;
 
-    public GameController(GameActivity gameActivity, GameView gameView, int screenX, int screenY) {
+    public GameController(GameActivity gameActivity, GameView gameView, int screenX, int screenY, MusicManager musicManager) {
         this.gameActivity = gameActivity;
         this.gameView = gameView;
         this.screenX = screenX;
         this.screenY = screenY;
         this.mapWidth = screenX / cellSize;
         this.mapHeight = screenY / cellSize;
+        this.musicManager = musicManager;
         // CHANGE: Don't call initGame() here - let startGame() handle it
     }
 
@@ -80,6 +82,9 @@ public class GameController implements Runnable {
                         currentCountdownDisplay--;
                     } else if (currentCountdownDisplay == 1) {
                         currentCountdownDisplay = 0;  // Show "GO!" next
+                        if (musicManager != null) {
+                            musicManager.resumeBackgroundMusic();
+                        }
                     } else {
                         gameState = GameState.RUNNING;
                     }
@@ -132,6 +137,10 @@ public class GameController implements Runnable {
 
         if (newHead.equals(food)) {
             score++;
+            // Play bite sound when snake eats food
+            if (musicManager != null) {
+                musicManager.playSoundEffect();
+            }
             spawnFood();
         } else {
             snake.remove(snake.size() - 1);
@@ -156,6 +165,7 @@ public class GameController implements Runnable {
     private void gameOver() {
         Log.d("GameController", "Game Over! Score: " + score);
         gameState = GameState.GAME_OVER;
+        musicManager.pauseBackgroundMusic();
     }
 
     private void draw() {
