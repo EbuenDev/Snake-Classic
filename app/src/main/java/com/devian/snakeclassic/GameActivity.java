@@ -27,6 +27,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView finalScoreTextView;
     private Typeface customFont;
     private Paint textPaint;
+    private MusicManager musicManager;
 
 
     @Override
@@ -38,11 +39,14 @@ public class GameActivity extends AppCompatActivity {
         final View dpadLayout = findViewById(R.id.dpadLayout);
         restartButton = findViewById(R.id.restartButton);
         mainMenuButton = findViewById(R.id.mainMenuButton);
+        musicManager = MusicManager.getInstance(this);
+
 
         // Fixed: Remove 'LinearLayout' declaration to use the class field
         gameOverLayout = findViewById(R.id.gameOverLayout);
         finalScoreTextView = findViewById(R.id.finalScoreTextView);
 //        customFont = Typeface.createFromAsset(getAssets(), "font/solderwood_regular.ttf");
+        musicManager.startBackgroundMusic(); // Start music when game starts
 
         // Debug: Check if findViewById worked
         if (gameOverLayout == null) {
@@ -70,7 +74,7 @@ public class GameActivity extends AppCompatActivity {
                 int gameWidth = size.x - margins;
                 int gameHeight = size.y - dpadHeight - topSpacerHeight - margins;
 
-                gameController = new GameController(GameActivity.this, gameView, gameWidth, gameHeight);
+                gameController = new GameController(GameActivity.this, gameView, gameWidth, gameHeight, musicManager);
                 gameView.setGameController(gameController);
 
                 // CHANGE: Use startGame() instead of resume() for proper initial countdown
@@ -122,6 +126,7 @@ public class GameActivity extends AppCompatActivity {
         mainMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                musicManager.pauseBackgroundMusic(); // pause music when press Main menu
                 gameOverLayout.setVisibility(View.GONE);
                 Intent intent = new Intent(GameActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -148,11 +153,13 @@ public class GameActivity extends AppCompatActivity {
         super.onPause();
         if (gameController != null) {
             gameView.pause();
+            musicManager.pauseBackgroundMusic();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        musicManager.startBackgroundMusic();
     }
 }

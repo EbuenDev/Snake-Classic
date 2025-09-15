@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.devian.snakeclassic.MusicManager;
 import com.devian.snakeclassic.R;
 import com.devian.snakeclassic.controller.GameController;
 
@@ -25,6 +26,8 @@ public class GameView extends SurfaceView {
     private SurfaceHolder holder;
     private Typeface customFont, countdownFont;
     private final int cellSize = 50;
+
+    private MusicManager musicManager;
 
     // ➡ Animation fields
 //    private ArrayList<PointF> smoothSnake; // Smooth positions for snake segments

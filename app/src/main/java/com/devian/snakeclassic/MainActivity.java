@@ -8,7 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-
+    private MusicManager musicManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,10 +16,12 @@ public class MainActivity extends AppCompatActivity {
 
         Button playButton = findViewById(R.id.playButton);
         Button exitButton = findViewById(R.id.exitButton);
+        musicManager = MusicManager.getInstance(this);
 
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                musicManager.startBackgroundMusic(); // Start music when game starts
                 startActivity(new Intent(MainActivity.this, GameActivity.class));
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
