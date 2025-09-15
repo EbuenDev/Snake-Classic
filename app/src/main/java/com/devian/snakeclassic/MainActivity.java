@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                musicManager.startBackgroundMusic(); // Start music when game starts
+                musicManager.playButtonPressSoundEffect();
+//                musicManager.startBackgroundMusic(); // Start music when game starts
                 startActivity(new Intent(MainActivity.this, GameActivity.class));
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
