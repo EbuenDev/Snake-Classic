@@ -1,7 +1,6 @@
 package com.devian.snakeclassic.controller;
 
 import android.graphics.Point;
-import android.view.MotionEvent;
 
 import com.devian.snakeclassic.GameActivity;
 import android.util.Log;
@@ -14,6 +13,10 @@ import java.util.Random;
 
 public class GameController implements Runnable {
 
+    public int getScore() {
+        return score;
+    }
+
     public enum GameState {
         COUNTDOWN, RUNNING,SHOW_GO, GAME_OVER, WAITING_FOR_RESTART
     }
@@ -21,9 +24,7 @@ public class GameController implements Runnable {
     private Thread thread;
     private boolean isPlaying;
     private GameState gameState;
-    private int countdownTimer;
-    public int currentCountdownDisplay = 3;
-
+    public int countdownTimer, currentCountdownDisplay = 3;
     private GameView gameView;
     private GameActivity gameActivity;
     private MusicManager musicManager;
@@ -31,8 +32,7 @@ public class GameController implements Runnable {
     private final int cellSize = 50;
     private ArrayList<Point> snake;
     private Point food;
-    private int direction = 2; // 0=up,1=right,2=down,3=left
-    private int score = 0;
+    private int direction = 2,score = 0; // 0=up,1=right,2=down,3=left
     private boolean gameOverShown = false;
 
     public GameController(GameActivity gameActivity, GameView gameView, int screenX, int screenY, MusicManager musicManager) {
@@ -93,7 +93,7 @@ public class GameController implements Runnable {
                 case RUNNING:
                     update();
                     draw();
-                    sleep(150);
+                    sleep(60);
                     break;
 
                 case SHOW_GO:
@@ -139,9 +139,14 @@ public class GameController implements Runnable {
         if (newHead.equals(food)) {
             score++;
             // Play bite sound when snake eats food
-            if (musicManager != null) {
-                musicManager.playEatSoundEffect();
+            if (musicManager != null) musicManager.playEatSoundEffect();
+//            score += 10; // or however you calculate score
+
+            // Update the UI
+            if (gameActivity != null) {
+                gameActivity.updateScore(score);
             }
+
             spawnFood();
         } else {
             snake.remove(snake.size() - 1);

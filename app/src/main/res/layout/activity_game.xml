@@ -7,12 +7,37 @@
     tools:context=".GameActivity">
 
     <!-- Top spacer to create margin -->
-    <View
+    <LinearLayout
         android:id="@+id/topSpacer"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
-        android:background="#1C222E" />
+        android:background="#1C222E"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/scoreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Score: 0"
+            android:fontFamily="@font/solderwood_regular"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <ImageButton
+            android:id="@+id/pauseButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="44dp"
+            android:background="@drawable/outline_pause_circle_24"
+            android:layout_marginEnd="20dp"/>
+    </LinearLayout>
 
     <com.devian.snakeclassic.view.GameView
         android:id="@+id/gameView"
@@ -112,6 +137,17 @@
             android:fontFamily="@font/solderwood_regular"
             android:gravity="center" />
 
+
+        <Button
+            android:id="@+id/resumeButton"
+            android:layout_width="160dp"
+            android:layout_height="70dp"
+            android:text="RESUME"
+            android:textSize="25sp"
+            android:visibility="gone"
+            android:background="@drawable/restart_button_selector"
+            android:fontFamily="@font/solderwood_regular"
+            />
         <Button
             android:id="@+id/restartButton"
             android:layout_width="160dp"
