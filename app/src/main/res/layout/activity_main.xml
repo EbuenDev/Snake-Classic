@@ -45,7 +45,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:text="© 2025 Developed by: Ebuen"
+        android:text="© 2025 Developed by: Devian"
         android:textColor="@color/white"
         android:textSize="12sp"
         android:fontFamily="monospace"

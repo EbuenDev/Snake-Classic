@@ -13,7 +13,6 @@ import android.view.SurfaceView;
 
 import androidx.core.content.res.ResourcesCompat;
 
-import com.devian.snakeclassic.MusicManager;
 import com.devian.snakeclassic.R;
 import com.devian.snakeclassic.controller.GameController;
 
@@ -27,26 +26,7 @@ public class GameView extends SurfaceView {
     private Typeface customFont, countdownFont;
     private final int cellSize = 50;
 
-    private MusicManager musicManager;
-
-    // ➡ Animation fields
-//    private ArrayList<PointF> smoothSnake; // Smooth positions for snake segments
-//    private PointF smoothFood; // Smooth position for food
-    private float animationProgress = 0f; // 0.0 to 1.0
-    private boolean isAnimating = false;
-//    private ArrayList<Point> lastSnakePositions;
-//    private Point lastFoodPosition;
-
-    // Custom PointF class for smooth positions
-    private static class PointF {
-        float x, y;
-        PointF(float x, float y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
-    // ➡ Added paint objects for custom drawing
+    // ➡ Paint objects for custom drawing
     private Paint snakePaint;
     private Paint eyePaint;
     private Paint foodPaint;
@@ -82,11 +62,6 @@ public class GameView extends SurfaceView {
 
         rectF = new RectF();
 
-        // Initialize animation objects
-//        smoothSnake = new ArrayList<>();
-//        smoothFood = new PointF(0, 0);
-//        lastSnakePositions = new ArrayList<>();
-
         try {
             countdownFont = ResourcesCompat.getFont(getContext(), R.font.pixel_countdown);
         } catch (Exception e) {
@@ -99,85 +74,6 @@ public class GameView extends SurfaceView {
             customFont = Typeface.DEFAULT_BOLD;
         }
     }
-
-    // Method to update animation progress (call this from your game loop)
-    public void updateAnimation(float deltaTime) {
-        if (isAnimating) {
-            animationProgress += deltaTime * 3.0f; // Adjust speed (3.0f = 3x faster)
-            if (animationProgress >= 1.0f) {
-                animationProgress = 1.0f;
-                isAnimating = false;
-            }
-        }
-    }
-
-    // Method to start animation when snake moves
-//    private void startAnimation(ArrayList<Point> newSnake, Point newFood) {
-//        if (lastSnakePositions.isEmpty()) {
-//            // First frame, no animation
-//            initializeSmoothPositions(newSnake, newFood);
-//            lastSnakePositions = new ArrayList<>(newSnake);
-//            lastFoodPosition = new Point(newFood.x, newFood.y);
-//            return;
-//        }
-//
-//        // Check if positions changed
-//        boolean snakeChanged = !newSnake.equals(lastSnakePositions);
-//        boolean foodChanged = !newFood.equals(lastFoodPosition);
-//
-//        if (snakeChanged || foodChanged) {
-//            animationProgress = 0f;
-//            isAnimating = true;
-//            lastSnakePositions = new ArrayList<>(newSnake);
-//            lastFoodPosition = new Point(newFood.x, newFood.y);
-//        }
-//    }
-
-//    private void initializeSmoothPositions(ArrayList<Point> snake, Point food) {
-//        smoothSnake.clear();
-//        for (Point p : snake) {
-//            smoothSnake.add(new PointF(p.x, p.y));
-//        }
-//        smoothFood.x = food.x;
-//        smoothFood.y = food.y;
-//    }
-
-//    private void updateSmoothPositions(ArrayList<Point> targetSnake, Point targetFood) {
-//        // Ensure we have the right number of segments
-//        while (smoothSnake.size() < targetSnake.size()) {
-//            Point lastTarget = targetSnake.get(smoothSnake.size());
-//            smoothSnake.add(new PointF(lastTarget.x, lastTarget.y));
-//        }
-//        while (smoothSnake.size() > targetSnake.size()) {
-//            smoothSnake.remove(smoothSnake.size() - 1);
-//        }
-//
-//        // Interpolate snake positions
-//        for (int i = 0; i < smoothSnake.size(); i++) {
-//            PointF current = smoothSnake.get(i);
-//            Point target = targetSnake.get(i);
-//
-//            // Smooth interpolation using easing function
-//            float t = easeInOutQuad(animationProgress);
-//            current.x = lerp(current.x, target.x, t);
-//            current.y = lerp(current.y, target.y, t);
-//        }
-//
-//        // Interpolate food position
-//        float t = easeInOutQuad(animationProgress);
-//        smoothFood.x = lerp(smoothFood.x, targetFood.x, t);
-//        smoothFood.y = lerp(smoothFood.y, targetFood.y, t);
-//    }
-
-    // Linear interpolation
-//    private float lerp(float start, float end, float t) {
-//        return start + (end - start) * t;
-//    }
-
-    // Easing function for smoother animation
-//    private float easeInOutQuad(float t) {
-//        return t < 0.5f ? 2f * t * t : -1f + (4f - 2f * t) * t;
-//    }
 
     private void drawSnakeHead(Canvas canvas, float x, float y, int direction) {
         float left = x * cellSize;
@@ -314,6 +210,7 @@ public class GameView extends SurfaceView {
             int mapTop = topOffset;
             int mapRight = mapLeft + (mapWidth * cellSize);
             int mapBottom = mapTop + (mapHeight * cellSize);
+
             // Draw yellow checkerboard background
             for (int x = 0; x < mapWidth; x++) {
                 for (int y = 0; y < mapHeight; y++) {
@@ -361,7 +258,7 @@ public class GameView extends SurfaceView {
                     // Get snake direction for head orientation
                     int direction = getDirection(snake);
 
-                    // Draw snake using actual positions (no animation for now)
+                    // Draw snake using actual positions
                     canvas.save();
                     canvas.translate(mapLeft, mapTop);
 
@@ -381,12 +278,7 @@ public class GameView extends SurfaceView {
                     drawFood(canvas, food.x, food.y);
 
                     canvas.restore();
-
-                    // Draw score
-                    paint.setColor(Color.WHITE);
-                    paint.setTextSize(60);
-                    paint.setTextAlign(Paint.Align.LEFT);
-                    canvas.drawText("Score: " + score, 50, 80, paint);
+                    // Score is now handled outside GameView
                     break;
 
                 case GAME_OVER:
@@ -408,5 +300,8 @@ public class GameView extends SurfaceView {
         if (gameController != null) {
             gameController.resume();
         }
+    }
+
+    public void updateAnimation(float v) {
     }
 }
